@@ -3402,9 +3402,9 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 
 	ASSERT(!FStrEq(m_szMapName, ""));
 
-	// Don't work in deathmatch
-	if ( g_pGameRules->IsDeathmatch() )
-		return;
+	// Do work in coop!    sp43
+//	if ( g_pGameRules->IsDeathmatch() )
+//		return;
 
 	// Some people are firing these multiple times in a frame, disable
 	if ( gpGlobals->time == pev->dmgtime )
@@ -4180,11 +4180,12 @@ LINK_ENTITY_TO_CLASS( trigger_autosave, CTriggerSave );
 
 void CTriggerSave::Spawn( void )
 {
-	if ( g_pGameRules->IsDeathmatch() )
-	{
-		REMOVE_ENTITY( ENT(pev) );
-		return;
-	}
+//										sp43 Maybe this will work?)
+//	if ( g_pGameRules->IsDeathmatch() )
+//	{
+//		REMOVE_ENTITY( ENT(pev) );
+//		return;
+//	}
 
 	InitTrigger();
 	SetTouch(&CTriggerSave:: SaveTouch );
@@ -4234,11 +4235,12 @@ void CTriggerEndSection::EndSectionUse( CBaseEntity *pActivator, CBaseEntity *pC
 
 void CTriggerEndSection::Spawn( void )
 {
-	if ( g_pGameRules->IsDeathmatch() )
-	{
-		REMOVE_ENTITY( ENT(pev) );
-		return;
-	}
+//										sp43 Will check this)
+//	if ( g_pGameRules->IsDeathmatch() )
+//	{
+//		REMOVE_ENTITY( ENT(pev) );
+//		return;
+//	}
 
 	InitTrigger();
 
