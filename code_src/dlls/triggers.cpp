@@ -3401,8 +3401,8 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	LEVELLIST	levels[16];
 
 	ASSERT(!FStrEq(m_szMapName, ""));
-
-/*										Do work in coop!    sp43
+/*										fire64, sp43
+	// Don't work in deathmatch
 	if ( g_pGameRules->IsDeathmatch() )
 		return;
 */
@@ -3441,7 +3441,7 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	SUB_UseTargets( pActivator, USE_TOGGLE, 0 );
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
-	// look for a landmark entity						Commented by sp43, idea of fire64
+	// look for a landmark entity		
 	pentLandmark = FindLandmark( m_szLandmarkName );
 	if ( !FNullEnt( pentLandmark ) )
 	{
@@ -3450,7 +3450,7 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	}
 //	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
 	ALERT( at_debug, "CHANGE LEVEL: %s %s\n", st_szNextMap, st_szNextSpot );
-
+	// Working now in multiplayer		fire64, sp43
 	if ( g_pGameRules->IsMultiplayer() )
 	{
 		CHANGE_LEVEL( st_szNextMap, NULL );
@@ -4188,12 +4188,11 @@ LINK_ENTITY_TO_CLASS( trigger_autosave, CTriggerSave );
 
 void CTriggerSave::Spawn( void )
 {
-//										sp43 Maybe this will work?)
-//	if ( g_pGameRules->IsDeathmatch() )
-//	{
-//		REMOVE_ENTITY( ENT(pev) );
-//		return;
-//	}
+	if ( g_pGameRules->IsDeathmatch() )
+	{
+		REMOVE_ENTITY( ENT(pev) );
+		return;
+	}
 
 	InitTrigger();
 	SetTouch(&CTriggerSave:: SaveTouch );
@@ -4204,9 +4203,9 @@ void CTriggerSave::SaveTouch( CBaseEntity *pOther )
 	if ( !UTIL_IsMasterTriggered( m_sMaster, pOther ) )
 		return;
 
-	// Only save on clients.			sp43 Not anymore)
-//	if ( !pOther->IsPlayer() )
-//		return;
+	// Only save on clients
+	if ( !pOther->IsPlayer() )
+		return;
     
 	SetTouch( NULL );
 	UTIL_Remove( this );
@@ -4243,12 +4242,11 @@ void CTriggerEndSection::EndSectionUse( CBaseEntity *pActivator, CBaseEntity *pC
 
 void CTriggerEndSection::Spawn( void )
 {
-//										sp43 Will check this)
-//	if ( g_pGameRules->IsDeathmatch() )
-//	{
-//		REMOVE_ENTITY( ENT(pev) );
-//		return;
-//	}
+	if ( g_pGameRules->IsDeathmatch() )
+	{
+		REMOVE_ENTITY( ENT(pev) );
+		return;
+	}
 
 	InitTrigger();
 
