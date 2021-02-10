@@ -3397,15 +3397,15 @@ void CChangeLevel :: UseChangeLevel ( CBaseEntity *pActivator, CBaseEntity *pCal
 
 void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 {
-//	edict_t	*pentLandmark;					sp43 small fix
+	edict_t	*pentLandmark;
 	LEVELLIST	levels[16];
 
 	ASSERT(!FStrEq(m_szMapName, ""));
 
-	// Do work in coop!    sp43
-//	if ( g_pGameRules->IsDeathmatch() )
-//		return;
-
+/*										Do work in coop!    sp43
+	if ( g_pGameRules->IsDeathmatch() )
+		return;
+*/
 	// Some people are firing these multiple times in a frame, disable
 	if ( gpGlobals->time == pev->dmgtime )
 		return;
@@ -3442,15 +3442,23 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
 	// look for a landmark entity						Commented by sp43, idea of fire64
-//	pentLandmark = FindLandmark( m_szLandmarkName );
-//	if ( !FNullEnt( pentLandmark ) )
-//	{
-//		strcpy(st_szNextSpot, m_szLandmarkName);
-//		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
-//	}
+	pentLandmark = FindLandmark( m_szLandmarkName );
+	if ( !FNullEnt( pentLandmark ) )
+	{
+		strcpy(st_szNextSpot, m_szLandmarkName);
+		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
+	}
 //	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
 	ALERT( at_debug, "CHANGE LEVEL: %s %s\n", st_szNextMap, st_szNextSpot );
-	CHANGE_LEVEL( st_szNextMap, st_szNextSpot );
+
+	if ( g_pGameRules->IsMultiplayer() )
+	{
+		CHANGE_LEVEL( st_szNextMap, NULL );
+	}
+	else
+	{
+		CHANGE_LEVEL( st_szNextMap, st_szNextSpot );
+	}
 }
 
 //
