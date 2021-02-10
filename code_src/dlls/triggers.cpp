@@ -3442,11 +3442,11 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
 	// look for a landmark entity		
-	pentLandmark = FindLandmark( m_szLandmarkName );
-	if ( !FNullEnt( pentLandmark ) )
-	{
-		strcpy(st_szNextSpot, m_szLandmarkName);
-		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
+//	pentLandmark = FindLandmark( m_szLandmarkName );
+//	if ( !FNullEnt( pentLandmark ) )
+//	{
+//		strcpy(st_szNextSpot, m_szLandmarkName);
+//		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
 	}
 //	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
 	ALERT( at_debug, "CHANGE LEVEL: %s %s\n", st_szNextMap, st_szNextSpot );
