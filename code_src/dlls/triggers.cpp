@@ -4196,9 +4196,9 @@ void CTriggerSave::SaveTouch( CBaseEntity *pOther )
 	if ( !UTIL_IsMasterTriggered( m_sMaster, pOther ) )
 		return;
 
-	// Only save on clients
-	if ( !pOther->IsPlayer() )
-		return;
+	// Only save on clients.			sp43 Not anymore)
+//	if ( !pOther->IsPlayer() )
+//		return;
     
 	SetTouch( NULL );
 	UTIL_Remove( this );
