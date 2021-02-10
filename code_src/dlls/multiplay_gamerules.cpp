@@ -534,6 +534,17 @@ float CHalfLifeMultiplay :: FlPlayerFallDamage( CBasePlayer *pPlayer )
 //=========================================================
 BOOL CHalfLifeMultiplay::FPlayerCanTakeDamage( CBasePlayer *pPlayer, CBaseEntity *pAttacker )
 {
+//========================================================= PLut, sp43 coop fix start
+	if ( pAttacker && PlayerRelationship( pPlayer, pAttacker ) == GR_NOTTEAMMATE )
+	{
+		// another player hit me.
+		if ( (friendlyfire.value == 0) && (pAttacker != pPlayer) )
+		{
+			// friendly fire is off, and this hit came from someone other than myself,  then don't get hurt
+			return FALSE;
+		}
+	}
+//========================================================= PLut, sp43 coop fix end
 	return TRUE;
 }
 
@@ -1110,6 +1121,9 @@ edict_t *CHalfLifeMultiplay::GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 //=========================================================
 int CHalfLifeMultiplay::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarget )
 {
+	if ( !pPlayer || !pTarget || !pTarget->IsPlayer() )
+		return GR_TEAMMATE;
+
 	// half life deathmatch has only enemies
 	return GR_NOTTEAMMATE;
 }
